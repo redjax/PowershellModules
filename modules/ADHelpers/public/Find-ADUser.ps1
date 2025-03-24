@@ -31,7 +31,8 @@ function Find-ADUser {
     $allProperties = @($SearchPatterns.Keys) + @(
         'Enabled', 
         'msDS-UserPasswordExpiryTimeComputed', 
-        'PasswordNeverExpires'
+        'PasswordNeverExpires',
+        'Description'
     )
 
     Write-Output "Starting AD search..."
@@ -42,7 +43,7 @@ function Find-ADUser {
     ## Search AD
     try {
         $discoveredUsers = Get-ADUser -Filter $filterString -Properties $allProperties | 
-        Select-Object SamAccountName, Name, Enabled, @{Name = 'PasswordExpirationDate'; Expression = {
+        Select-Object SamAccountName, Name, Enabled, Description, @{Name = 'PasswordExpirationDate'; Expression = {
                 if ($_.PasswordNeverExpires) { 
                     "Never Expires" 
                 }
