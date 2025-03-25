@@ -11,11 +11,11 @@ function Find-ADUser {
         .PARAMETER LogicalOperator
             The logical operator ('and'/'or') to use when joining the filter strings.
         .EXAMPLE
-            Find-ADUser -SearchPatterns @{ 'Title' = 'Sales' }  # Get all users with 'Sales' anywhere in the title
+            Find-ADUser -SearchPatterns @{ Title = 'Sales' }  # Get all users with 'Sales' anywhere in the title
         .EXAMPLE
-            Find-ADUser -SearchPatterns @{ 'Description' = 'Sales'; 'Title' = 'Sales' } -LogicalOperator 'and' # Get all users with 'Sales' anywhere in the description AND title
+            Find-ADUser -SearchPatterns @{ Description = 'Sales'; Title = Sales } -LogicalOperator 'and' # Get all users with 'Sales' anywhere in the description AND title
         .EXAMPLE
-            Find-ADUser -SearchPatterns @{ 'Description' = '*developer*'} -Disabled  # Get all disabled users with 'developer' anywhere in the description
+            Find-ADUser -SearchPatterns @{ Description = '*developer*'} -Disabled  # Get all disabled users with 'developer' anywhere in the description
     #>
     [CmdletBinding()]
     param (
