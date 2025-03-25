@@ -1,11 +1,28 @@
 function Find-ADUser {
+    <#
+        .SYNOPSIS
+            Search Active Directory for users based on search patterns.
+        .DESCRIPTION
+            Search for users based on properties like Description, Title, etc.
+        .PARAMETER SearchPatterns
+            A hashtable of property names and search patterns.
+        .PARAMETER Disabled
+            Include disabled users in the search.
+        .PARAMETER LogicalOperator
+            The logical operator ('and'/'or') to use when joining the filter strings.
+        .EXAMPLE
+            Find-ADUser -SearchPatterns @{ 'Title' = 'Sales' }  # Get all users with 'Sales' anywhere in the title
+            Find-ADUser -SearchPatterns @{ 'Description' = 'Sales'; 'Title' = 'Sales' } -LogicalOperator 'and' # Get all users with 'Sales' anywhere in the description AND title
+            Find-ADUser -SearchPatterns @{ 'Description' = '*developer*'} -Disabled  # Get all disabled users with 'developer' anywhere in the description
+    #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, HelpMessage = 'A hashtable of property names and search patterns.')]
         [ValidateNotNull()]
         [Hashtable]$SearchPatterns,
-        
+        [Parameter(Mandatory = $false, HelpMessage = 'When -Disabled is present, also include disabled users in the search.')]
         [switch]$Disabled,
+        [Parameter(Mandatory = $false, HelpMessage = 'Logical comparison to use, "and" or "or"')]
         [ValidateSet('and', 'or')]
         [string]$LogicalOperator = 'and'
     )
