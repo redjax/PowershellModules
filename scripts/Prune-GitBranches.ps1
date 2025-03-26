@@ -31,7 +31,7 @@ try {
         $_.toString().Trim().Split(" ")[0]
     } `
     | ForEach-Object {
-        git branch -d $_ 
+        git branch -D $_ 
     }
 
     Write-Host "Local branches pruned." -ForegroundColor Green
