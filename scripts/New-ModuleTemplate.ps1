@@ -1,42 +1,57 @@
 <#
-.SYNOPSIS
-    Creates a new PowerShell module in the monorepo using Invoke-PSMDTemplate.
-    
-.DESCRIPTION
-    This script automates the process of setting up a new module by:
-    - Creating the module in ./modules/
-    - Initializing it with Invoke-PSMDTemplate
-    - Setting up a basic folder structure (public, private, tests)
-    - Adding a README and test scaffolding
+    .SYNOPSIS
+        Creates a new PowerShell module in the monorepo using Invoke-PSMDTemplate.
+        
+    .DESCRIPTION
+        This script automates the process of setting up a new module by:
+        - Creating the module in ./modules/
+        - Initializing it with Invoke-PSMDTemplate
+        - Setting up a basic folder structure (public, private, tests)
+        - Adding a README and test scaffolding
 
-.PARAMETER Name
-    The name of the new module.
+    .PARAMETER Name
+        The name of the new module.
 
-.EXAMPLE
-    .\tools\New-ModuleTemplate.ps1 -Name MyNewModule
+    .PARAMETER Category
+        Category (subdirectory) for new modules, i.e. '.\modules\`$Category. Path will be created if it does not exist.
+
+    .PARAMETER Description
+        Short description for the module.
+
+    .EXAMPLE
+        .\tools\New-ModuleTemplate.ps1 -Name MyNewModule -Category "Example" -Description "A new module in the Example\ directory."
 #>
-
 param (
+    [CmdletBinding()]
     [Parameter(Mandatory = $true, HelpMessage = "The name of the new module.")]
-    [string]$Name
+    [string]$Name,
+    [Parameter(Mandatory = $true, HelpMessage = "Category (subdirectory) for new modules, i.e. '.\modules\`$Category. Path will be created if it does not exist.")]
+    [string]$Category,
+    [Parameter(Mandatory = $true, HelpMessage = "Short description for the module.")]
+    $Description
 )
 
-# Ensure we're in the repository root
+## Set to path where script was called from (repository root)
 $RepoRoot = Split-Path -Parent $PSScriptRoot
-$ModulesPath = Join-Path $RepoRoot "modules"
-$ModulePath = Join-Path $ModulesPath $Name
+## Set path to modules directory
+$ModulesPath = Join-Path -Path $RepoRoot -ChildPath "modules"
+## Set path to category directory (modules\$Category)
+$ModuleCategoryPath = Join-Path -Path $ModulesPath -ChildPath "$Category"
+## Set full path to new module
+$ModulePath = Join-Path -Path $ModuleCategoryPath -ChildPath $Name
 
-if ( -Not ( Test-Path -Path $ModulesPath ) ) {
-    Write-Warning "Modules path '$($ModulesPath)' does not exist. Creating path."
+if ( -Not ( Test-Path -Path $ModuleCategoryPath ) ) {
+    Write-Warning "Modules path '$($ModuleCategoryPath)' does not exist. Creating path."
     try {
-        New-Item -Path "$($ModulesPath)" -ItemType "directory"
+        New-Item -Path "$($ModuleCategoryPath)" -ItemType "directory" -Force
     }
     catch {
-        Write-Error "Error creating path '$($ModulesPath)'. Details: $($_.Exception.Message)"
+        Write-Error "Error creating path '$($ModuleCategoryPath)'. Details: $($_.Exception.Message)"
         exit 1
     }
 }
 
+## Ensure PSModuleDevelopment module is installed
 If ( -Not (Get-Command Invoke-PSMDTemplate -ErrorAction SilentlyContinue) ) {
     Write-Warning "This script requires the Invoke-PSMDTemplate module. Attempting to install."
     try {
@@ -48,28 +63,32 @@ If ( -Not (Get-Command Invoke-PSMDTemplate -ErrorAction SilentlyContinue) ) {
     }
 }
 
-# Check if the module already exists
+## Check if the module already exists
 if (Test-Path $ModulePath) {
-    Write-Error "Module '$Name' already exists in the monorepo."
-    exit 1
+    Write-Error "Module '$Name' already exists at path $ModulePath."
+    exit 2
 }
 
-Write-Output "Creating module: $Name in $ModulesPath..."
+Write-Output "Creating module: '$Name' in path: $ModuleCategoryPath..."
 try {
-    Invoke-PSMDTemplate -TemplateName "Module" -Name $Name -OutPath $ModulesPath
+    Invoke-PSMDTemplate `
+        -TemplateName "Module" `
+        -Name $Name `
+        -OutPath $ModuleCategoryPath `
+        -Parameters @{description = "$Description" }
 }
 catch {
     Write-Error "Error creating new module from template. Details: $($_.Exception.Message)"
     exit 1
 }
 
-# Ensure required directories exist
+## Ensure required directories exist
 $Directories = @("public", "private", "tests")
 foreach ($Dir in $Directories) {
     New-Item -Path (Join-Path $ModulePath $Dir) -ItemType Directory -Force | Out-Null
 }
 
-# Create a README.md
+## Create a README.md
 $ReadmePath = Join-Path $ModulePath "README.md"
 if (-not (Test-Path $ReadmePath)) {
     @"
@@ -79,17 +98,17 @@ This module is part of the PowerShell monorepo.
 
 ## Installation
 
-\`\`\`powershell
+` ``` `powershell
 Import-Module (Join-Path `$(PSScriptRoot) $Name.psm1`)
-\`\`\`
+```
 
 ## Description
 
-TODO: Describe the module.
+$Description
 "@ | Set-Content -Path $ReadmePath -Encoding utf8
 }
 
-# Create an empty Pester test file
+## Create an empty Pester test file
 $TestFile = Join-Path -Path (Join-Path -Path $ModulePath -ChildPath "tests") -ChildPath "$Name.Tests.ps1"
 
 if (-not (Test-Path $TestFile)) {
@@ -119,4 +138,4 @@ foreach (`$function in (Get-ChildItem "`$ModuleRoot/public" -Recurse -File -Filt
 
 $AppendModuleFunctionExportString | Out-File -FilePath $ModulePath\$Name.psm1 -Append -Encoding utf8
 
-Write-Output "Module '$Name' has been initialized successfully."
+Write-Output "`nModule '$Name' has been initialized successfully."
