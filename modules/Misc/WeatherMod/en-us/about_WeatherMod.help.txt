@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_WeatherMod
+	
+SHORT DESCRIPTION
+	A short synopsis of WeatherMod
+
+LONG DESCRIPTION
+	A more detailed description of WeatherMod,
+	Should tell the user how to get started with this module.
+	
+KEYWORDS
+	module development debugging
