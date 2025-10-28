@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_PathHelpers
+	
+SHORT DESCRIPTION
+	A short synopsis of PathHelpers
+
+LONG DESCRIPTION
+	A more detailed description of PathHelpers,
+	Should tell the user how to get started with this module.
+	
+KEYWORDS
+	module development debugging
