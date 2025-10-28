@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_AzureHelpers
+	
+SHORT DESCRIPTION
+	A short synopsis of AzureHelpers
+
+LONG DESCRIPTION
+	A more detailed description of AzureHelpers,
+	Should tell the user how to get started with this module.
+	
+KEYWORDS
+	module development debugging

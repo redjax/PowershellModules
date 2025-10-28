@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_DotnetAspireHelpers
+	
+SHORT DESCRIPTION
+	A short synopsis of DotnetAspireHelpers
+
+LONG DESCRIPTION
+	A more detailed description of DotnetAspireHelpers,
+	Should tell the user how to get started with this module.
+	
+KEYWORDS
+	module development debugging
