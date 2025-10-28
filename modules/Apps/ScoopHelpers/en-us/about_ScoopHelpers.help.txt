@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_ScoopHelpers
+	
+SHORT DESCRIPTION
+	A short synopsis of ScoopHelpers
+
+LONG DESCRIPTION
+	A more detailed description of ScoopHelpers,
+	Should tell the user how to get started with this module.
+	
+KEYWORDS
+	module development debugging
