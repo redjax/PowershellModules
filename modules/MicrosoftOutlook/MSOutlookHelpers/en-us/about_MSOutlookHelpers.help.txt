@@ -1,0 +1,12 @@
+﻿TOPIC
+	about_MSOutlookHelpers
+	
+SHORT DESCRIPTION
+	A short synopsis of MSOutlookHelpers
+
+LONG DESCRIPTION
+	A more detailed description of MSOutlookHelpers,
+	Should tell the user how to get started with this module.
+	
+KEYWORDS
+	module development debugging
