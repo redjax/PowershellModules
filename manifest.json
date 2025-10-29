@@ -1,0 +1,94 @@
+{
+  "modules": [
+    {
+      "name": "ADHelpers",
+      "category": "ActiveDirectory",
+      "path": "modules/ActiveDirectory/ADHelpers"
+    },
+    {
+      "name": "BitwardenHelpers",
+      "category": "Apps",
+      "path": "modules/Apps/BitwardenHelpers"
+    },
+    {
+      "name": "ScoopHelpers",
+      "category": "Apps",
+      "path": "modules/Apps/ScoopHelpers"
+    },
+    {
+      "name": "SystHelpers",
+      "category": "Apps",
+      "path": "modules/Apps/SystHelpers"
+    },
+    {
+      "name": "YaziHelpers",
+      "category": "Apps",
+      "path": "modules/Apps/YaziHelpers"
+    },
+    {
+      "name": "AzureDevOpsHelpers",
+      "category": "Azure",
+      "path": "modules/Azure/AzureDevOpsHelpers"
+    },
+    {
+      "name": "AzureHelpers",
+      "category": "Azure",
+      "path": "modules/Azure/AzureHelpers"
+    },
+    {
+      "name": "DatetimeHelpers",
+      "category": "Convenience",
+      "path": "modules/Convenience/DatetimeHelpers"
+    },
+    {
+      "name": "PathHelpers",
+      "category": "Convenience",
+      "path": "modules/Convenience/PathHelpers"
+    },
+    {
+      "name": "PlatformInfo",
+      "category": "Convenience",
+      "path": "modules/Convenience/PlatformInfo"
+    },
+    {
+      "name": "StringHelpers",
+      "category": "Convenience",
+      "path": "modules/Convenience/StringHelpers"
+    },
+    {
+      "name": "UnixAliases",
+      "category": "Convenience",
+      "path": "modules/Convenience/UnixAliases"
+    },
+    {
+      "name": "DotnetAspireHelpers",
+      "category": "Dotnet",
+      "path": "modules/Dotnet/DotnetAspireHelpers"
+    },
+    {
+      "name": "MSOutlookHelpers",
+      "category": "MicrosoftOutlook",
+      "path": "modules/MicrosoftOutlook/MSOutlookHelpers"
+    },
+    {
+      "name": "MSTeamsHelpers",
+      "category": "MicrosoftTeams",
+      "path": "modules/MicrosoftTeams/MSTeamsHelpers"
+    },
+    {
+      "name": "WeatherMod",
+      "category": "Misc",
+      "path": "modules/Misc/WeatherMod"
+    },
+    {
+      "name": "NetworkHelpers",
+      "category": "Networking",
+      "path": "modules/Networking/NetworkHelpers"
+    },
+    {
+      "name": "SecurityHelpers",
+      "category": "Security",
+      "path": "modules/Security/SecurityHelpers"
+    }
+  ]
+}
