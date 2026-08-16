@@ -1,0 +1,82 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigestsToSemver"],
+  "labels": ["dependencies", "renovate"],
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "rebaseWhen": "conflicted",
+  "rangeStrategy": "pin",
+  "packageRules": [
+    {
+      "description": "Group PowerShell Gallery module updates",
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["nuget"],
+      "groupName": "PowerShell Gallery modules",
+      "groupSlug": "powershell-gallery-modules"
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "groupSlug": "github-actions"
+    },
+    {
+      "description": "Do not automatically merge PowerShell module updates",
+      "matchManagers": ["custom.regex"],
+      "automerge": false
+    },
+    {
+      "description": "Automatically merge patch-level GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch", "digest"],
+      "automerge": true
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "PowerShell RequiredModules entries in module manifests",
+      "managerFilePatterns": ["/\\.psd1$/"],
+      "matchStrings": [
+        "(?i)ModuleName\\s*=\\s*['\\\"](?<depName>[^'\\\"]+)['\\\"]\\s*;\\s*(?:RequiredVersion|ModuleVersion)\\s*=\\s*['\\\"](?<currentValue>[^'\\\"]+)['\\\"]"
+      ],
+      "datasourceTemplate": "nuget",
+      "registryUrlTemplate": "https://www.powershellgallery.com/api/v2/",
+      "versioningTemplate": "nuget"
+    },
+    {
+      "customType": "regex",
+      "description": "PowerShell #Requires module declarations with pinned versions",
+      "managerFilePatterns": ["/\\.(?:ps1|psm1)$/"],
+      "matchStrings": [
+        "(?im)^\\s*#Requires\\s+-Modules?\\s+['\\\"]?(?<depName>[A-Za-z0-9._-]+)['\\\"]?\\s+-Version\\s+['\\\"]?(?<currentValue>[0-9][A-Za-z0-9.+_-]*)['\\\"]?"
+      ],
+      "datasourceTemplate": "nuget",
+      "registryUrlTemplate": "https://www.powershellgallery.com/api/v2/",
+      "versioningTemplate": "nuget"
+    },
+    {
+      "customType": "regex",
+      "description": "Pinned Install-Module commands",
+      "managerFilePatterns": ["/\\.(?:ps1|psm1)$/"],
+      "matchStrings": [
+        "(?im)\\bInstall-Module\\s+-Name\\s+['\\\"]?(?<depName>[A-Za-z0-9._-]+)['\\\"]?\\s+-RequiredVersion\\s+['\\\"]?(?<currentValue>[0-9][A-Za-z0-9.+_-]*)['\\\"]?"
+      ],
+      "datasourceTemplate": "nuget",
+      "registryUrlTemplate": "https://www.powershellgallery.com/api/v2/",
+      "versioningTemplate": "nuget"
+    },
+    {
+      "customType": "regex",
+      "description": "Explicit Renovate dependency declarations in PowerShell files",
+      "managerFilePatterns": ["/\\.(?:ps1|psm1|psd1)$/"],
+      "matchStrings": [
+        "(?im)^\\s*#\\s*renovate:\\s*datasource=nuget\\s+depName=(?<depName>[^\\s]+)\\s+registryUrl=https://www\\.powershellgallery\\.com/api/v2/\\s*\\r?\\n\\s*\\$[A-Za-z0-9_]+\\s*=\\s*['\\\"](?<currentValue>[^'\\\"]+)['\\\"]"
+      ],
+      "datasourceTemplate": "nuget",
+      "registryUrlTemplate": "https://www.powershellgallery.com/api/v2/",
+      "versioningTemplate": "nuget"
+    }
+  ]
+}
